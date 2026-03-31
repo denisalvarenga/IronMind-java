@@ -3,6 +3,7 @@ package model;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Aluno {
 
@@ -16,14 +17,19 @@ public class Aluno {
     private Plano plano;
 
     private List<Aula> aulas = new ArrayList<>();
-
-    // 🔥 NOVO - frequência
     private List<Frequencia> frequencias = new ArrayList<>();
 
     public Aluno(String nome, String cpf) {
         this.nome = nome;
         this.cpf = cpf;
         this.dataMatricula = LocalDate.now();
+        this.id = gerarMatricula();
+    }
+
+    // Gera matrícula de 4 dígitos
+    private int gerarMatricula() {
+        Random random = new Random();
+        return 1000 + random.nextInt(9000);
     }
 
     public String getNome() {
@@ -46,7 +52,6 @@ public class Aluno {
         return aulas;
     }
 
-    //  NOVO
     public List<Frequencia> getFrequencias() {
         return frequencias;
     }
@@ -64,10 +69,17 @@ public class Aluno {
     }
 
     public void setEmail(String email) {
-        this.email = email;
+
+        if (email.contains("@gmail.com") ||
+                email.contains("@outlook.com") ||
+                email.contains("@icloud.com")) {
+
+            this.email = email;
+        } else {
+            System.out.println("Email inválido. Use gmail, outlook ou icloud.");
+        }
     }
 
-    // MÉTODO QUE FALTAVA
     public void registrarEntrada() {
         frequencias.add(new Frequencia());
     }

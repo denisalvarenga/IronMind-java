@@ -1,6 +1,7 @@
 package service;
 
 import model.Aluno;
+
 import java.time.LocalDate;
 
 public class PlanoService {
@@ -11,15 +12,13 @@ public class PlanoService {
             return false;
         }
 
-        LocalDate dataMatricula = aluno.getDataMatricula();
-        int duracao = aluno.getPlano().getDuracaoMeses();
+        LocalDate vencimento = calcularVencimento(aluno);
 
-        LocalDate vencimento = dataMatricula.plusMonths(duracao);
-
-        return LocalDate.now().isBefore(vencimento);
+        return !LocalDate.now().isAfter(vencimento);
     }
 
     public LocalDate calcularVencimento(Aluno aluno) {
+
         return aluno.getDataMatricula()
                 .plusMonths(aluno.getPlano().getDuracaoMeses());
     }

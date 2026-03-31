@@ -12,7 +12,7 @@ public class Aula {
     private int capacidadeMaxima;
     private LocalDateTime horario;
     private int duracaoMinutos;
-    private Instrutor instrutor; // novo atributo
+    private Instrutor instrutor;
 
     private List<Aluno> alunos = new ArrayList<>();
 
@@ -31,91 +31,40 @@ public class Aula {
         this.duracaoMinutos = duracaoMinutos;
     }
 
-    // Getters e Setters
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
+    // Getters
     public String getNome() {
         return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
     }
 
     public int getCapacidadeMaxima() {
         return capacidadeMaxima;
     }
 
-    public void setCapacidadeMaxima(int capacidadeMaxima) {
-        this.capacidadeMaxima = capacidadeMaxima;
-    }
-
     public LocalDateTime getHorario() {
         return horario;
-    }
-
-    public void setHorario(LocalDateTime horario) {
-        this.horario = horario;
-    }
-
-    public int getDuracaoMinutos() {
-        return duracaoMinutos;
-    }
-
-    public void setDuracaoMinutos(int duracaoMinutos) {
-        this.duracaoMinutos = duracaoMinutos;
     }
 
     public Instrutor getInstrutor() {
         return instrutor;
     }
 
-    public void setInstrutor(Instrutor instrutor) {
-        this.instrutor = instrutor;
-    }
-
     public List<Aluno> getAlunos() {
         return alunos;
     }
 
-    // Métodos para gerenciar alunos
+    // Setters
+    public void setInstrutor(Instrutor instrutor) {
+        this.instrutor = instrutor;
+    }
+
+    // Regra de negócio: adicionar aluno respeitando capacidade
     public boolean adicionarAluno(Aluno aluno) {
+
         if (alunos.size() >= capacidadeMaxima) {
             return false;
         }
+
         alunos.add(aluno);
         return true;
-    }
-
-    public boolean removerAluno(Aluno aluno) {
-        return alunos.remove(aluno);
-    }
-
-    @Override
-    public String toString() {
-        return "Aula{" +
-                "id=" + id +
-                ", nome='" + nome + '\'' +
-                ", descricao='" + descricao + '\'' +
-                ", capacidadeMaxima=" + capacidadeMaxima +
-                ", horario=" + horario +
-                ", duracaoMinutos=" + duracaoMinutos +
-                ", instrutor=" + (instrutor != null ? instrutor.getNome() : "Não definido") +
-                ", alunosMatriculados=" + alunos.size() +
-                '}';
     }
 }

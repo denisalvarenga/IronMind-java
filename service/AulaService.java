@@ -3,52 +3,69 @@ package service;
 import model.Aluno;
 import model.Aula;
 
+import java.time.LocalDate;
+
 public class AulaService {
 
     private PlanoService planoService = new PlanoService();
 
-    // Verifica conflito de horário
-    private boolean temConflitoHorario(Aluno aluno, Aula novaAula) {
+    // INSCRIÇÃO COMPLETA (REGRA DE NEGÓCIO)
+    public void inscreverAluno(Aluno aluno, Aula aula) {
 
-        for (Aula aula : aluno.getAulas()) {
+        // 1. Verificar plano
+        if (aluno.getPlano() == null) {
+            System.out.println("Aluno não possui plano.");
+            return;
+        }
 
-            if (aula.getHorario().equals(novaAula.getHorario())) {
-                System.out.println(" Conflito de horário com a aula: " + aula.getNome());
-                return true;
+        // 2. Verificar se plano está ativo
+        if (!planoService.planoAtivo(aluno)) {
+
+            LocalDate vencimento = planoService.calcularVencimento(aluno);
+
+            System.out.println("Plano vencido em: " + vencimento);
+            return;
+        }
+
+        // 3. Verificar conflito de horário
+        for (Aula a : aluno.getAulas()) {
+
+            if (a.getHorario().equals(aula.getHorario())) {
+                System.out.println("Conflito de horário com a aula: " + a.getNome());
+                return;
             }
         }
 
-        return false;
+        // 4. Verificar capacidade
+        if (aula.getAlunos().size() >= aula.getCapacidadeMaxima()) {
+            System.out.println("Aula lotada.");
+            return;
+        }
+
+        // 5. Verificar se já está inscrito
+        if (aula.getAlunos().contains(aluno)) {
+            System.out.println("Aluno já está inscrito nesta aula.");
+            return;
+        }
+
+        // 6. Inscrever (mantendo consistência)
+        aula.getAlunos().add(aluno);
+        aluno.getAulas().add(aula);
+
+        System.out.println("Inscrição realizada com sucesso!");
     }
 
-    // Método principal
-    public boolean inscreverAluno(Aluno aluno, Aula aula) {
+    // CANCELAR INSCRIÇÃO
+    public void cancelarInscricao(Aluno aluno, Aula aula) {
 
-        // 1. Plano ativo
-        if (!planoService.planoAtivo(aluno)) {
-            System.out.println(" Plano vencido!");
-            return false;
+        if (!aula.getAlunos().contains(aluno)) {
+            System.out.println("Aluno não está inscrito nesta aula.");
+            return;
         }
 
-        // 2. Capacidade
-        if (aula.getAlunos().size() >= aula.getCapacidadeMaxima()) {
-            System.out.println(" Aula lotada!");
-            return false;
-        }
+        aula.getAlunos().remove(aluno);
+        aluno.getAulas().remove(aula);
 
-        // 3. Conflito de horário
-        if (temConflitoHorario(aluno, aula)) {
-            return false;
-        }
-
-        // 4. Inscrever
-        boolean sucesso = aula.adicionarAluno(aluno);
-
-        if (sucesso) {
-            aluno.adicionarAula(aula);
-            System.out.println(" Inscrição realizada!");
-        }
-
-        return sucesso;
+        System.out.println("Inscrição cancelada com sucesso.");
     }
 }
