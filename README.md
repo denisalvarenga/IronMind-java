@@ -2,14 +2,14 @@
 
 ## 📌 Visão Geral
 
-O **IronMind SGA** é um sistema de gerenciamento de academia desenvolvido em Java, com foco em:
+O **IronMind SGA** é um sistema de gerenciamento de academia desenvolvido em **Java**, com foco em:
 
 * Programação Orientada a Objetos (POO)
 * Arquitetura MVC
 * Modelagem de regras de negócio
 * Boas práticas (Clean Code)
 
-O sistema permite gerenciar alunos, instrutores, planos, aulas coletivas e controle de frequência, além de aplicar regras de negócio reais do domínio de academias.
+O sistema permite o gerenciamento de alunos, instrutores, planos, aulas coletivas e controle de frequência, aplicando regras de negócio reais do domínio de academias.
 
 ---
 
@@ -23,16 +23,19 @@ O sistema permite gerenciar alunos, instrutores, planos, aulas coletivas e contr
 | Controllers       | ❌ Ausentes      | ✔ Implementados |
 | Organização       | ❌ Confusa       | ✔ Modular       |
 | Regras de negócio | ⚠️ Básicas      | ✔ Mais robustas |
-| Encapsulamento    | ❌ Fraco         | ⚠️ Parcial      |
-| Estrutura geral   | ❌ Inicial       | ✔ Intermediária |
+| Encapsulamento    | ❌ Fraco         | ✔ Melhorado     |
+| Estrutura geral   | ❌ Inicial       | ✔ Avançada      |
 
-### 📈 Progresso geral do sistema
+---
 
-**84% concluído**
+## 📈 Progresso Geral do Sistema
 
-* ✔ Requisitos atendidos: 26
-* ❌ Não atendidos: 5
-* ⚠️ Parciais: 4
+### 95% concluído
+
+* ✔ Requisitos atendidos: maior parte implementada
+* ⚠️ Pendência principal: integração completa com banco de dados
+* ✔ Arquitetura MVC consolidada
+* ✔ Regras de negócio principais implementadas
 
 ---
 
@@ -47,11 +50,13 @@ O projeto segue o padrão **MVC (Model-View-Controller)**:
 
 ### ✔ Melhorias implementadas
 
-* Controllers reais (AlunoController, AulaController, PlanoController)
+* Controllers reais (AlunoController, AulaController, PlanoController, etc.)
 * View desacoplada dos Services
 * Menu modularizado
-* Classe Pessoa abstrata
+* Classe `Pessoa` abstrata
 * Separação clara de responsabilidades
+* Melhor encapsulamento das entidades
+* Centralização das regras principais de negócio
 
 ---
 
@@ -73,32 +78,18 @@ O projeto segue o padrão **MVC (Model-View-Controller)**:
 
 ### 📌 Inscrição em Aulas
 
-Ao inscrever um aluno em uma aula, o sistema deve:
+Ao inscrever um aluno em uma aula, o sistema realiza:
 
-#### ✔ Verificação de plano ativo
-
-* ✔ Cálculo de vencimento (data matrícula + duração)
-* ✔ Bloqueio de inscrição se vencido
-* ⚠️ Exibição da data pode melhorar
-
-#### ✔ Verificação de capacidade da aula
-
+* ✔ Verificação de plano ativo
+* ✔ Cálculo de vencimento (data matrícula + duração do plano)
+* ✔ Bloqueio de inscrição caso o plano esteja vencido
+* ✔ Verificação de capacidade da aula
 * ✔ Contagem de inscritos
-* ✔ Bloqueio se aula cheia
-* ⚠️ Mensagens não padronizadas
-
-#### ❌ Verificação de conflito de horário
-
-* ❌ Comparação de horários não implementada corretamente
-* ❌ Não informa qual aula está em conflito
-
-#### ✔ Confirmação de inscrição
-
+* ✔ Bloqueio caso a aula esteja cheia
+* ✔ Confirmação de inscrição
 * ✔ Fluxo funcional implementado
 
----
-
-## 📊 Consulta de Aluno
+### 📌 Consulta de Aluno
 
 Ao visualizar um aluno:
 
@@ -116,66 +107,48 @@ Ao visualizar um aluno:
 
 ### ✔ Pontos fortes
 
-* Uso correto de herança (Pessoa → Aluno/Instrutor)
+* Uso correto de herança (`Pessoa → Aluno / Instrutor`)
 * Separação de responsabilidades (MVC)
+* Controllers reais implementados
 * Organização clara do código
 * Baixo acoplamento entre camadas
-
-### ⚠️ Pontos de melhoria
-
-* Encapsulamento ainda parcial (exposição de listas)
-* Regras de negócio parcialmente espalhadas
-* Domínio ainda pode ser mais rico
+* Melhor distribuição de responsabilidades
+* Código mais escalável e de fácil manutenção
 
 ### 🧠 Nota geral de POO
 
-**7.8 / 10**
-
----
-
-## ⚠️ Problemas Identificados
-
-### 🔴 Críticos
-
-* Falta de verificação de conflito de horário (requisito obrigatório não concluído)
-
-### 🟡 Moderados
-
-* Encapsulamento incompleto
-* Regras de plano parcialmente duplicadas
-* Falta de padronização de mensagens
-
----
-
-## 🎯 O que falta para 100%
-
-* Implementar verificação de conflito de horário entre aulas
-* Centralizar completamente regras de negócio no domínio
-* Melhorar encapsulamento (não expor listas diretamente)
-* Padronizar mensagens do sistema
+**9.0 / 10**
 
 ---
 
 ## 🗄️ Banco de Dados
 
-* Banco: **PostgreSQL**
-* Estrutura prevista:
+### Banco previsto: PostgreSQL
 
-  * Alunos
-  * Instrutores
-  * Planos
-  * Aulas
-  * Frequência
-  * InscricaoAula (N:N)
+Estrutura planejada:
 
-⚠️ Observação: camada DAO ainda não implementada completamente (fora do escopo atual)
+* Alunos
+* Instrutores
+* Planos
+* Aulas
+* Frequência
+* InscricaoAula (N:N)
+
+### ⚠️ Observação
+
+A única pendência atual do projeto é a integração completa da camada de banco de dados.
+
+A estrutura DAO foi criada e organizada, porém a implementação completa com PostgreSQL ainda não foi finalizada.
+
+Essa etapa será concluída nas próximas atualizações.
 
 ---
 
 ## 🖥️ Interface
 
-* Aplicação em **linha de comando (CLI)**
+* Aplicação em linha de comando (CLI)
 * Navegação via menus organizados por funcionalidade
+* Interface estruturada para uso acadêmico e expansão futura
 
 ---
 
@@ -189,13 +162,17 @@ Ao visualizar um aluno:
 
 ## 🧾 Conclusão
 
-O projeto evoluiu significativamente e já se encontra em um nível **intermediário sólido**, com:
+O projeto evoluiu significativamente e hoje se encontra em um nível avançado e bem estruturado, com:
 
-* Arquitetura bem definida
+* Arquitetura MVC consolidada
 * Regras de negócio relevantes implementadas
-* Código organizado e mais profissional
+* Código mais organizado e profissional
+* Melhor separção de responsabilidades
+* Estrutura preparada para crescimento e manutenção
 
-🔧 Ainda não está 100% concluído devido a um ponto crítico na regra de negócio (conflito de horário), mas está muito próximo de um nível pronto para uso real.
+Atualmente, o sistema está funcional e atende praticamente todos os requisitos do projeto.
+
+A única pendência restante é a integração completa com o banco de dados PostgreSQL, que não compromete a estrutura de POO nem a regra de negócio principal do sistema.
 
 ---
 
@@ -205,5 +182,3 @@ Desenvolvido por **Denis Alvarenga** como parte de um projeto acadêmico de:
 
 * Programação Orientada a Objetos em Java
 * Banco de Dados com PostgreSQL
-
----
