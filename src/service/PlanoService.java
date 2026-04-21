@@ -57,15 +57,12 @@ public class PlanoService implements CrudService<Plano> {
     public void criar(Plano plano) {
         if (plano != null) {
             planos.add(plano);
-            System.out.println("Plano cadastrado com sucesso.");
-        } else {
-            System.out.println("Erro: plano inválido.");
         }
     }
 
     @Override
     public List<Plano> listar() {
-        return new ArrayList<>(planos); // ✅ CORRETO
+        return new ArrayList<>(planos);
     }
 
     @Override
@@ -83,32 +80,6 @@ public class PlanoService implements CrudService<Plano> {
 
         if (plano != null) {
             planos.remove(plano);
-            System.out.println("Plano removido com sucesso.");
-        } else {
-            System.out.println("Plano não encontrado.");
-        }
-    }
-
-    // ===== MÉTODO DE EXIBIÇÃO (AGORA CORRETO) =====
-
-    public void exibirPlanos() {
-        if (planos.isEmpty()) {
-            System.out.println("Nenhum plano cadastrado.");
-            return;
-        }
-
-        System.out.println("===== PLANOS DISPONÍVEIS =====");
-
-        for (int i = 0; i < planos.size(); i++) {
-            Plano plano = planos.get(i);
-
-            System.out.println("ID: " + (i + 1));
-            System.out.println("Plano: " + plano.getNome());
-            System.out.println("Descrição: " + plano.getDescricao());
-            System.out.println("Valor mensal: R$ " + plano.getValorMensal());
-            System.out.println("Benefícios: " + plano.getBeneficios());
-            System.out.println("Duração: " + plano.getDuracaoMeses() + " meses");
-            System.out.println("----------------------------");
         }
     }
 

@@ -11,7 +11,7 @@ public class Plano {
     private String beneficios;
     private int duracaoMeses;
 
-    private List<Aluno> alunos = new ArrayList<>();
+    private final List<Aluno> alunos = new ArrayList<>();
 
     public Plano(String nome, String descricao, double valorMensal,
                  String beneficios, int duracaoMeses) {
@@ -39,10 +39,26 @@ public class Plano {
     }
 
     public void adicionarAluno(Aluno aluno) {
-        alunos.add(aluno);
+        if (aluno != null) {
+            alunos.add(aluno);
+        }
     }
 
     public void removerAluno(Aluno aluno) {
-        alunos.remove(aluno);
+        if (aluno != null) {
+            alunos.remove(aluno);
+        }
+    }
+
+    // ===== APOIO PARA VIEW/CONTROLLER =====
+
+    public String exibirResumo() {
+        return
+                "Plano: " + nome +
+                        "\nDescrição: " + descricao +
+                        "\nValor Mensal: R$ " + valorMensal +
+                        "\nDuração: " + duracaoMeses + " meses" +
+                        "\nBenefícios: " + beneficios +
+                        "\nTotal de Alunos: " + getTotalAlunos();
     }
 }

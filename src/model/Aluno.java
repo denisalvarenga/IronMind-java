@@ -41,17 +41,13 @@ public class Aluno extends Pessoa {
                 ? plano.getNome()
                 : "Sem plano";
 
-        LocalDate vencimento = getVencimentoPlano();
+        LocalDate vencimento = getDataVencimento();
 
         String ultimaVisita = "Nenhuma visita registrada";
 
-        if (!frequencias.isEmpty()) {
-            Frequencia ultima = frequencias.get(frequencias.size() - 1);
-
-            if (ultima.getDataHora() != null) {
-                LocalDateTime dataHora = ultima.getDataHora();
-                ultimaVisita = dataHora.toString();
-            }
+        LocalDateTime ultima = getUltimaVisita();
+        if (ultima != null) {
+            ultimaVisita = ultima.toString();
         }
 
         return
@@ -88,17 +84,13 @@ public class Aluno extends Pessoa {
     // ===== REGRA DE NEGÓCIO (PLANO) =====
 
     public boolean planoAtivo() {
-        if (plano == null || dataMatricula == null) {
-            return false;
-        }
-
-        LocalDate vencimento =
-                dataMatricula.plusMonths(plano.getDuracaoMeses());
+        LocalDate vencimento = getDataVencimento();
+        if (vencimento == null) return false;
 
         return !LocalDate.now().isAfter(vencimento);
     }
 
-    public LocalDate getVencimentoPlano() {
+    public LocalDate getDataVencimento() {
         if (plano == null || dataMatricula == null) {
             return null;
         }
@@ -114,6 +106,13 @@ public class Aluno extends Pessoa {
 
     public int getTotalInscricoes() {
         return inscricoes.size();
+    }
+
+    public LocalDateTime getUltimaVisita() {
+        if (frequencias.isEmpty()) return null;
+
+        Frequencia ultima = frequencias.get(frequencias.size() - 1);
+        return ultima.getDataHora();
     }
 
     public void adicionarFrequencia(Frequencia frequencia) {

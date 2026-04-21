@@ -41,40 +41,48 @@ public class Menu {
 
         do {
             limparTela();
-
-            System.out.println("=== IRON MIND ===");
-            System.out.println("1 - Alunos");
-            System.out.println("2 - Instrutores");
-            System.out.println("3 - Planos");
-            System.out.println("4 - Aulas");
-            System.out.println("5 - Inscrição em aula");
-            System.out.println("6 - Cancelar inscrição");
-            System.out.println("7 - Registrar frequência");
-            System.out.println("8 - Relatório de frequência");
-            System.out.println("0 - Sair");
+            exibirMenuPrincipal();
 
             op = lerInt();
 
             limparTela();
-
-            switch (op) {
-                case 1 -> menuAluno();
-                case 2 -> menuInstrutor();
-                case 3 -> menuPlano();
-                case 4 -> menuAula();
-                case 5 -> inscreverAluno();
-                case 6 -> cancelarInscricao();
-                case 7 -> registrarFrequencia();
-                case 8 -> relatorioFrequencia();
-                case 0 -> System.out.println("Encerrando sistema...");
-                default -> System.out.println("Opção inválida.");
-            }
+            executarOpcaoPrincipal(op);
 
             if (op != 0) {
                 pausar();
             }
 
         } while (op != 0);
+    }
+
+    private void exibirMenuPrincipal() {
+        System.out.println("=== IRON MIND ===");
+        System.out.println("1 - Alunos");
+        System.out.println("2 - Instrutores");
+        System.out.println("3 - Planos");
+        System.out.println("4 - Aulas");
+        System.out.println("5 - Inscrição em aula");
+        System.out.println("6 - Cancelar inscrição");
+        System.out.println("7 - Registrar frequência");
+        System.out.println("8 - Relatório de frequência");
+        System.out.println("9 - Relatório de ocupação"); // NOVO
+        System.out.println("0 - Sair");
+    }
+
+    private void executarOpcaoPrincipal(int op) {
+        switch (op) {
+            case 1 -> menuAluno();
+            case 2 -> menuInstrutor();
+            case 3 -> menuPlano();
+            case 4 -> menuAula();
+            case 5 -> inscreverAluno();
+            case 6 -> cancelarInscricao();
+            case 7 -> registrarFrequencia();
+            case 8 -> relatorioFrequencia();
+            case 9 -> relatorioOcupacao(); // NOVO
+            case 0 -> System.out.println("Encerrando sistema...");
+            default -> System.out.println("Opção inválida.");
+        }
     }
 
     private void limparTela() {
@@ -112,238 +120,219 @@ public class Menu {
     // ================= ALUNO =================
 
     private void menuAluno() {
-
         System.out.println("1 - Cadastrar");
         System.out.println("2 - Listar");
 
         int op = lerInt();
 
-        if (op == 1) {
+        switch (op) {
+            case 1 -> cadastrarAluno();
+            case 2 -> alunoController.listarAlunos();
+            default -> System.out.println("Opção inválida.");
+        }
+    }
 
-            List<Plano> planos = planoController.consultarTodos();
+    private void cadastrarAluno() {
 
-            if (planos.isEmpty()) {
-                System.out.println("Cadastre um plano primeiro.");
-                return;
-            }
+        List<Plano> planos = planoController.consultarTodos();
 
-            System.out.print("Nome: ");
-            String nome = sc.nextLine();
-
-            System.out.print("CPF: ");
-            String cpf = sc.nextLine();
-
-            System.out.print("Telefone: ");
-            String telefone = sc.nextLine();
-
-            System.out.print("Email: ");
-            String email = sc.nextLine();
-
-            System.out.print("Data de nascimento (AAAA-MM-DD): ");
-            LocalDate nascimento = LocalDate.parse(sc.nextLine());
-
-            System.out.println("Escolha o plano:");
-
-            for (int i = 0; i < planos.size(); i++) {
-                System.out.println(i + " - " + planos.get(i).getNome());
-            }
-
-            int indicePlano = lerInt();
-
-            if (indicePlano < 0 || indicePlano >= planos.size()) {
-                System.out.println("Plano inválido.");
-                return;
-            }
-
-            Plano plano = planos.get(indicePlano);
-
-            Aluno aluno = new Aluno(
-                    nome,
-                    cpf,
-                    telefone,
-                    nascimento,
-                    email,
-                    LocalDate.now(),
-                    plano
-            );
-
-            alunoController.cadastrarAluno(aluno);
+        if (planos.isEmpty()) {
+            System.out.println("Cadastre um plano primeiro.");
+            return;
         }
 
-        else if (op == 2) {
+        System.out.print("Nome: ");
+        String nome = sc.nextLine();
 
-            List<Aluno> alunos = alunoController.consultarTodos();
+        System.out.print("CPF: ");
+        String cpf = sc.nextLine();
 
-            if (alunos.isEmpty()) {
-                System.out.println("Nenhum aluno cadastrado.");
-                return;
-            }
+        System.out.print("Telefone: ");
+        String telefone = sc.nextLine();
 
-            for (Aluno aluno : alunos) {
-                System.out.println(aluno.exibirResumo());
-                System.out.println("-----------------------------------");
-            }
+        System.out.print("Email: ");
+        String email = sc.nextLine();
+
+        System.out.print("Data de nascimento (AAAA-MM-DD): ");
+        LocalDate nascimento = LocalDate.parse(sc.nextLine());
+
+        Plano plano = selecionarPlano(planos);
+
+        if (plano == null) {
+            System.out.println("Plano inválido.");
+            return;
         }
+
+        Aluno aluno = new Aluno(
+                nome,
+                cpf,
+                telefone,
+                nascimento,
+                email,
+                LocalDate.now(),
+                plano
+        );
+
+        alunoController.cadastrarAluno(aluno);
     }
 
     // ================= INSTRUTOR =================
 
     private void menuInstrutor() {
-
         System.out.println("1 - Cadastrar");
         System.out.println("2 - Listar");
 
         int op = lerInt();
 
-        if (op == 1) {
+        switch (op) {
+            case 1 -> cadastrarInstrutor();
+            case 2 -> listarInstrutores();
+            default -> System.out.println("Opção inválida.");
+        }
+    }
 
-            System.out.print("Nome: ");
-            String nome = sc.nextLine();
+    private void cadastrarInstrutor() {
 
-            System.out.print("CPF: ");
-            String cpf = sc.nextLine();
+        System.out.print("Nome: ");
+        String nome = sc.nextLine();
 
-            System.out.print("Telefone: ");
-            String telefone = sc.nextLine();
+        System.out.print("CPF: ");
+        String cpf = sc.nextLine();
 
-            System.out.print("Especialidade: ");
-            String especialidade = sc.nextLine();
+        System.out.print("Telefone: ");
+        String telefone = sc.nextLine();
 
-            System.out.print("Horário de trabalho: ");
-            String horario = sc.nextLine();
+        System.out.print("Especialidade: ");
+        String especialidade = sc.nextLine();
 
-            Instrutor instrutor = new Instrutor(
-                    nome,
-                    cpf,
-                    telefone,
-                    especialidade,
-                    horario
-            );
+        System.out.print("Horário de trabalho: ");
+        String horario = sc.nextLine();
 
-            instrutorController.cadastrarInstrutor(instrutor);
+        Instrutor instrutor = new Instrutor(
+                nome,
+                cpf,
+                telefone,
+                especialidade,
+                horario
+        );
+
+        instrutorController.cadastrarInstrutor(instrutor);
+    }
+
+    private void listarInstrutores() {
+
+        List<Instrutor> instrutores = instrutorController.listarInstrutores();
+
+        if (instrutores.isEmpty()) {
+            System.out.println("Nenhum instrutor cadastrado.");
+            return;
         }
 
-        else if (op == 2) {
-
-            List<Instrutor> instrutores = instrutorController.listarInstrutores();
-
-            if (instrutores.isEmpty()) {
-                System.out.println("Nenhum instrutor cadastrado.");
-                return;
-            }
-
-            for (Instrutor instrutor : instrutores) {
-                System.out.println(
-                        instrutor.getNome()
-                                + " - "
-                                + instrutor.getEspecialidade()
-                );
-            }
+        for (Instrutor instrutor : instrutores) {
+            System.out.println(
+                    instrutor.getNome()
+                            + " - "
+                            + instrutor.getEspecialidade()
+            );
         }
     }
 
     // ================= PLANO =================
 
     private void menuPlano() {
-
         System.out.println("1 - Cadastrar");
         System.out.println("2 - Listar");
 
         int op = lerInt();
 
-        if (op == 1) {
-
-            System.out.print("Nome: ");
-            String nome = sc.nextLine();
-
-            System.out.print("Descrição: ");
-            String descricao = sc.nextLine();
-
-            System.out.print("Valor mensal: ");
-            double valor = Double.parseDouble(sc.nextLine());
-
-            System.out.print("Benefícios: ");
-            String beneficios = sc.nextLine();
-
-            System.out.print("Duração em meses: ");
-            int duracao = lerInt();
-
-            Plano plano = new Plano(
-                    nome,
-                    descricao,
-                    valor,
-                    beneficios,
-                    duracao
-            );
-
-            planoController.criar(plano);
+        switch (op) {
+            case 1 -> cadastrarPlano();
+            case 2 -> planoController.listar();
+            default -> System.out.println("Opção inválida.");
         }
+    }
 
-        else if (op == 2) {
-            planoController.listar();
-        }
+    private void cadastrarPlano() {
+
+        System.out.print("Nome: ");
+        String nome = sc.nextLine();
+
+        System.out.print("Descrição: ");
+        String descricao = sc.nextLine();
+
+        System.out.print("Valor mensal: ");
+        double valor = Double.parseDouble(sc.nextLine());
+
+        System.out.print("Benefícios: ");
+        String beneficios = sc.nextLine();
+
+        System.out.print("Duração em meses: ");
+        int duracao = lerInt();
+
+        Plano plano = new Plano(
+                nome,
+                descricao,
+                valor,
+                beneficios,
+                duracao
+        );
+
+        planoController.criar(plano);
     }
 
     // ================= AULA =================
 
     private void menuAula() {
-
         System.out.println("1 - Cadastrar");
         System.out.println("2 - Listar");
 
         int op = lerInt();
 
-        if (op == 1) {
+        switch (op) {
+            case 1 -> cadastrarAula();
+            case 2 -> aulaController.listar();
+            default -> System.out.println("Opção inválida.");
+        }
+    }
 
-            List<Instrutor> instrutores = instrutorController.listarInstrutores();
+    private void cadastrarAula() {
 
-            if (instrutores.isEmpty()) {
-                System.out.println("Cadastre um instrutor primeiro.");
-                return;
-            }
+        List<Instrutor> instrutores = instrutorController.listarInstrutores();
 
-            System.out.print("Nome da aula: ");
-            String nome = sc.nextLine();
-
-            System.out.print("Descrição: ");
-            String descricao = sc.nextLine();
-
-            System.out.print("Duração (minutos): ");
-            int duracao = lerInt();
-
-            System.out.print("Capacidade: ");
-            int capacidade = lerInt();
-
-            System.out.println("Escolha o instrutor:");
-
-            for (int i = 0; i < instrutores.size(); i++) {
-                System.out.println(i + " - " + instrutores.get(i).getNome());
-            }
-
-            int indiceInstrutor = lerInt();
-
-            if (indiceInstrutor < 0 || indiceInstrutor >= instrutores.size()) {
-                System.out.println("Instrutor inválido.");
-                return;
-            }
-
-            Instrutor instrutor = instrutores.get(indiceInstrutor);
-
-            Aula aula = new Aula(
-                    nome,
-                    descricao,
-                    duracao,
-                    LocalDateTime.now().plusHours(1),
-                    capacidade,
-                    instrutor
-            );
-
-            aulaController.criar(aula);
+        if (instrutores.isEmpty()) {
+            System.out.println("Cadastre um instrutor primeiro.");
+            return;
         }
 
-        else if (op == 2) {
-            aulaController.listar();
+        System.out.print("Nome da aula: ");
+        String nome = sc.nextLine();
+
+        System.out.print("Descrição: ");
+        String descricao = sc.nextLine();
+
+        System.out.print("Duração (minutos): ");
+        int duracao = lerInt();
+
+        System.out.print("Capacidade: ");
+        int capacidade = lerInt();
+
+        Instrutor instrutor = selecionarInstrutor(instrutores);
+
+        if (instrutor == null) {
+            System.out.println("Instrutor inválido.");
+            return;
         }
+
+        Aula aula = new Aula(
+                nome,
+                descricao,
+                duracao,
+                LocalDateTime.now().plusHours(1),
+                capacidade,
+                instrutor
+        );
+
+        aulaController.criar(aula);
     }
 
     // ================= INSCRIÇÃO =================
@@ -358,42 +347,15 @@ public class Menu {
             return;
         }
 
-        System.out.println("Escolha o aluno:");
+        Aluno aluno = selecionarAluno(alunos);
+        Aula aula = selecionarAula(aulas);
 
-        for (int i = 0; i < alunos.size(); i++) {
-            System.out.println(i + " - " + alunos.get(i).getNome());
-        }
-
-        int indiceAluno = lerInt();
-
-        if (indiceAluno < 0 || indiceAluno >= alunos.size()) {
-            System.out.println("Aluno inválido.");
+        if (aluno == null || aula == null) {
+            System.out.println("Aluno ou aula inválidos.");
             return;
         }
 
-        System.out.println("Escolha a aula:");
-
-        for (int i = 0; i < aulas.size(); i++) {
-            System.out.println(i + " - " + aulas.get(i).getNome());
-        }
-
-        int indiceAula = lerInt();
-
-        if (indiceAula < 0 || indiceAula >= aulas.size()) {
-            System.out.println("Aula inválida.");
-            return;
-        }
-
-        Aluno aluno = alunos.get(indiceAluno);
-        Aula aula = aulas.get(indiceAula);
-
-        boolean sucesso = aulaController.inscreverAluno(aluno, aula);
-
-        if (sucesso) {
-            System.out.println("Inscrição realizada com sucesso.");
-        } else {
-            System.out.println("Falha na inscrição.");
-        }
+        aulaController.inscreverAluno(aluno, aula);
     }
 
     // ================= CANCELAR =================
@@ -408,38 +370,15 @@ public class Menu {
             return;
         }
 
-        System.out.println("Escolha o aluno:");
+        Aluno aluno = selecionarAluno(alunos);
+        Aula aula = selecionarAula(aulas);
 
-        for (int i = 0; i < alunos.size(); i++) {
-            System.out.println(i + " - " + alunos.get(i).getNome());
-        }
-
-        int indiceAluno = lerInt();
-
-        if (indiceAluno < 0 || indiceAluno >= alunos.size()) {
-            System.out.println("Aluno inválido.");
+        if (aluno == null || aula == null) {
+            System.out.println("Aluno ou aula inválidos.");
             return;
         }
-
-        System.out.println("Escolha a aula para cancelar:");
-
-        for (int i = 0; i < aulas.size(); i++) {
-            System.out.println(i + " - " + aulas.get(i).getNome());
-        }
-
-        int indiceAula = lerInt();
-
-        if (indiceAula < 0 || indiceAula >= aulas.size()) {
-            System.out.println("Aula inválida.");
-            return;
-        }
-
-        Aluno aluno = alunos.get(indiceAluno);
-        Aula aula = aulas.get(indiceAula);
 
         aulaController.cancelarInscricao(aluno, aula);
-
-        System.out.println("Processo de cancelamento finalizado.");
     }
 
     // ================= FREQUÊNCIA =================
@@ -453,29 +392,25 @@ public class Menu {
             return;
         }
 
-        System.out.println("Escolha o aluno:");
+        Aluno aluno = selecionarAluno(alunos);
 
-        for (int i = 0; i < alunos.size(); i++) {
-            System.out.println(i + " - " + alunos.get(i).getNome());
-        }
-
-        int indiceAluno = lerInt();
-
-        if (indiceAluno < 0 || indiceAluno >= alunos.size()) {
+        if (aluno == null) {
             System.out.println("Aluno inválido.");
             return;
         }
-
-        Aluno aluno = alunos.get(indiceAluno);
 
         Frequencia frequencia = new Frequencia(
                 aluno,
                 LocalDateTime.now()
         );
 
-        frequenciaController.registrar(frequencia);
+        boolean sucesso = frequenciaController.registrar(frequencia);
 
-        System.out.println("Frequência registrada com sucesso.");
+        if (sucesso) {
+            System.out.println("Frequência registrada com sucesso.");
+        } else {
+            System.out.println("Falha ao registrar frequência.");
+        }
     }
 
     private void relatorioFrequencia() {
@@ -493,5 +428,45 @@ public class Menu {
             System.out.println(aluno.exibirResumo());
             System.out.println("-----------------------------------");
         }
+    }
+
+    // ================= RELATÓRIO DE OCUPAÇÃO =================
+
+    private void relatorioOcupacao() {
+        aulaController.relatorioOcupacao();
+    }
+
+    // ===== AUXILIARES =====
+
+    private Plano selecionarPlano(List<Plano> planos) {
+        for (int i = 0; i < planos.size(); i++) {
+            System.out.println(i + " - " + planos.get(i).getNome());
+        }
+        int indice = lerInt();
+        return (indice >= 0 && indice < planos.size()) ? planos.get(indice) : null;
+    }
+
+    private Instrutor selecionarInstrutor(List<Instrutor> instrutores) {
+        for (int i = 0; i < instrutores.size(); i++) {
+            System.out.println(i + " - " + instrutores.get(i).getNome());
+        }
+        int indice = lerInt();
+        return (indice >= 0 && indice < instrutores.size()) ? instrutores.get(indice) : null;
+    }
+
+    private Aluno selecionarAluno(List<Aluno> alunos) {
+        for (int i = 0; i < alunos.size(); i++) {
+            System.out.println(i + " - " + alunos.get(i).getNome());
+        }
+        int indice = lerInt();
+        return (indice >= 0 && indice < alunos.size()) ? alunos.get(indice) : null;
+    }
+
+    private Aula selecionarAula(List<Aula> aulas) {
+        for (int i = 0; i < aulas.size(); i++) {
+            System.out.println(i + " - " + aulas.get(i).getNome());
+        }
+        int indice = lerInt();
+        return (indice >= 0 && indice < aulas.size()) ? aulas.get(indice) : null;
     }
 }

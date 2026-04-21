@@ -1,4 +1,4 @@
-import view.Menu;
+package view;
 
 public class Main {
 

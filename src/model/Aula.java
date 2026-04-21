@@ -86,4 +86,18 @@ public class Aula {
             inscricoes.remove(inscricao);
         }
     }
+
+    // ===== APOIO PARA VIEW/CONTROLLER =====
+
+    public String exibirResumo() {
+        return
+                "Aula: " + nome +
+                        "\nDescrição: " + descricao +
+                        "\nInstrutor: " + (instrutor != null ? instrutor.getNome() : "Não definido") +
+                        "\nHorário: " + horario +
+                        "\nDuração: " + duracao + " min" +
+                        "\nCapacidade: " + capacidade +
+                        "\nInscritos: " + getTotalInscricoes() +
+                        "\nStatus: " + (estaLotada() ? "LOTADA" : "DISPONÍVEL");
+    }
 }

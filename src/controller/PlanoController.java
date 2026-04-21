@@ -18,6 +18,7 @@ public class PlanoController {
     public void criar(Plano plano) {
         if (plano != null) {
             planoService.criar(plano);
+            System.out.println("Plano cadastrado com sucesso.");
         } else {
             System.out.println("Plano inválido.");
         }
@@ -26,7 +27,23 @@ public class PlanoController {
     // ===== LISTAGEM =====
 
     public void listar() {
-        planoService.listar();
+
+        List<Plano> planos = planoService.listar();
+
+        if (planos.isEmpty()) {
+            System.out.println("Nenhum plano cadastrado.");
+            return;
+        }
+
+        System.out.println("===== PLANOS DISPONÍVEIS =====");
+
+        for (int i = 0; i < planos.size(); i++) {
+            Plano plano = planos.get(i);
+
+            System.out.println("ID: " + (i + 1));
+            System.out.println(plano.exibirResumo());
+            System.out.println("----------------------------");
+        }
     }
 
     public List<Plano> consultarTodos() {
@@ -42,6 +59,13 @@ public class PlanoController {
     // ===== REMOÇÃO =====
 
     public void remover(int id) {
-        planoService.remover(id);
+        Plano plano = planoService.buscarPorId(id);
+
+        if (plano != null) {
+            planoService.remover(id);
+            System.out.println("Plano removido com sucesso.");
+        } else {
+            System.out.println("Plano não encontrado.");
+        }
     }
 }

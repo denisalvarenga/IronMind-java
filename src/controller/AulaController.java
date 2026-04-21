@@ -19,6 +19,7 @@ public class AulaController {
     public void criar(Aula aula) {
         if (aula != null) {
             aulaService.criar(aula);
+            System.out.println("Aula cadastrada com sucesso.");
         } else {
             System.out.println("Aula inválida.");
         }
@@ -27,7 +28,25 @@ public class AulaController {
     // ===== LISTAGEM =====
 
     public void listar() {
-        aulaService.listar();
+
+        List<Aula> aulas = aulaService.listar();
+
+        if (aulas == null || aulas.isEmpty()) {
+            System.out.println("Nenhuma aula cadastrada.");
+            return;
+        }
+
+        System.out.println("===== LISTA DE AULAS =====");
+
+        for (int i = 0; i < aulas.size(); i++) {
+            Aula aula = aulas.get(i);
+
+            if (aula != null) {
+                System.out.println("ID: " + (i + 1));
+                System.out.println(aula.exibirResumo());
+                System.out.println("----------------------------");
+            }
+        }
     }
 
     public List<Aula> consultarTodos() {
@@ -43,30 +62,63 @@ public class AulaController {
     // ===== REMOÇÃO =====
 
     public void remover(int id) {
-        aulaService.remover(id);
+        Aula aula = aulaService.buscarPorId(id);
+
+        if (aula != null) {
+            aulaService.remover(id);
+            System.out.println("Aula removida com sucesso.");
+        } else {
+            System.out.println("Aula não encontrada.");
+        }
     }
 
     // ===== REGRA DE NEGÓCIO =====
 
-    public boolean inscreverAluno(Aluno aluno, Aula aula) {
-        if (aluno == null || aula == null) {
-            System.out.println("Aluno ou aula inválidos.");
-            return false;
-        }
+    public void inscreverAluno(Aluno aluno, Aula aula) {
 
-        return aulaService.inscrever(aluno, aula);
-    }
-
-    public void cancelarInscricao(Aluno aluno, Aula aula) {
         if (aluno == null || aula == null) {
             System.out.println("Aluno ou aula inválidos.");
             return;
         }
 
-        aulaService.cancelar(aluno, aula);
+        String resposta = aulaService.inscrever(aluno, aula);
+        System.out.println(resposta);
     }
 
+    public void cancelarInscricao(Aluno aluno, Aula aula) {
+
+        if (aluno == null || aula == null) {
+            System.out.println("Aluno ou aula inválidos.");
+            return;
+        }
+
+        String resposta = aulaService.cancelar(aluno, aula);
+        System.out.println(resposta);
+    }
+
+    // ===== RELATÓRIO DE OCUPAÇÃO =====
+
     public void relatorioOcupacao() {
-        aulaService.relatorioOcupacao();
+
+        List<Aula> aulas = aulaService.listar();
+
+        if (aulas == null || aulas.isEmpty()) {
+            System.out.println("Nenhuma aula cadastrada.");
+            return;
+        }
+
+        System.out.println("===== RELATÓRIO DE OCUPAÇÃO =====");
+
+        for (Aula aula : aulas) {
+            if (aula != null) {
+                System.out.println(
+                        aula.getNome()
+                                + " -> "
+                                + aula.getTotalInscricoes()
+                                + "/"
+                                + aula.getCapacidade()
+                );
+            }
+        }
     }
 }

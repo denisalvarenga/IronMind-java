@@ -18,6 +18,7 @@ public class AlunoController {
     public void cadastrarAluno(Aluno aluno) {
         if (aluno != null) {
             alunoService.criar(aluno);
+            System.out.println("Aluno cadastrado com sucesso.");
         } else {
             System.out.println("Aluno inválido.");
         }
@@ -26,7 +27,23 @@ public class AlunoController {
     // ===== LISTAGEM =====
 
     public void listarAlunos() {
-        alunoService.listar();
+
+        List<Aluno> alunos = alunoService.listar();
+
+        if (alunos.isEmpty()) {
+            System.out.println("Nenhum aluno cadastrado.");
+            return;
+        }
+
+        System.out.println("===== LISTA DE ALUNOS =====");
+
+        for (int i = 0; i < alunos.size(); i++) {
+            Aluno aluno = alunos.get(i);
+
+            System.out.println("ID: " + (i + 1));
+            System.out.println(aluno.exibirResumo());
+            System.out.println("----------------------------");
+        }
     }
 
     public List<Aluno> consultarTodos() {
@@ -42,7 +59,14 @@ public class AlunoController {
     // ===== REMOÇÃO =====
 
     public void removerAluno(int id) {
-        alunoService.remover(id);
+        Aluno aluno = alunoService.buscarPorId(id);
+
+        if (aluno != null) {
+            alunoService.remover(id);
+            System.out.println("Aluno removido com sucesso.");
+        } else {
+            System.out.println("Aluno não encontrado.");
+        }
     }
 
     // ===== REGRA DE NEGÓCIO =====

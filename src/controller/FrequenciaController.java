@@ -7,15 +7,26 @@ import java.util.List;
 
 public class FrequenciaController {
 
-    private FrequenciaService frequenciaService;
+    private final FrequenciaService frequenciaService;
 
     public FrequenciaController() {
         this.frequenciaService = new FrequenciaService();
     }
 
-    public void registrar(Frequencia frequencia) {
-        frequenciaService.registrarEntrada(frequencia.getAluno());
+    // ===== REGISTRO =====
+
+    public boolean registrar(Frequencia frequencia) {
+
+        if (frequencia != null && frequencia.getAluno() != null) {
+            frequenciaService.registrarEntrada(frequencia.getAluno());
+            return true;
+        } else {
+            System.out.println("Frequência inválida.");
+            return false;
+        }
     }
+
+    // ===== LISTAGEM =====
 
     public List<Frequencia> listar() {
         return frequenciaService.listar();

@@ -1,5 +1,6 @@
 package service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,15 +22,12 @@ public class AulaService implements CrudService<Aula> {
     public void criar(Aula aula) {
         if (aula != null) {
             aulas.add(aula);
-            System.out.println("Aula cadastrada com sucesso.");
-        } else {
-            System.out.println("Erro: aula inválida.");
         }
     }
 
     @Override
     public List<Aula> listar() {
-        return new ArrayList<>(aulas); // ✅ CORRETO
+        return new ArrayList<>(aulas);
     }
 
     @Override
@@ -46,9 +44,6 @@ public class AulaService implements CrudService<Aula> {
 
         if (aula != null) {
             aulas.remove(aula);
-            System.out.println("Aula removida com sucesso.");
-        } else {
-            System.out.println("Aula não encontrada.");
         }
     }
 
@@ -56,85 +51,61 @@ public class AulaService implements CrudService<Aula> {
         return new ArrayList<>(aulas);
     }
 
-    // ===== MÉTODO DE EXIBIÇÃO (SEPARADO) =====
+    // ===== REGRA DE NEGÓCIO =====
 
-    public void exibirAulas() {
-        if (aulas.isEmpty()) {
-            System.out.println("Nenhuma aula cadastrada.");
-            return;
-        }
-
-        for (Aula aula : aulas) {
-            System.out.println("Aula: " + aula.getNome());
-            System.out.println("Descrição: " + aula.getDescricao());
-            System.out.println("Instrutor: " + aula.getInstrutor().getNome());
-            System.out.println("Horário: " + aula.getHorario());
-            System.out.println(
-                    "Capacidade: "
-                            + aula.getTotalInscricoes()
-                            + "/"
-                            + aula.getCapacidade()
-            );
-            System.out.println("----------------------------");
-        }
-    }
-
-    // ===== REGRA DE NEGÓCIO CRÍTICA =====
-
-    public boolean inscrever(Aluno aluno, Aula aula) {
+    public String inscrever(Aluno aluno, Aula aula) {
 
         if (aluno == null || aula == null) {
-            System.out.println("Aluno ou aula inválidos.");
-            return false;
+            return "Aluno ou aula inválidos.";
         }
 
         // 1. Plano ativo
         if (!aluno.planoAtivo()) {
-            System.out.println("Plano vencido em: " + aluno.getVencimentoPlano());
-            return false;
+            return "Plano vencido em: " + aluno.getDataVencimento();
         }
 
         // 2. Capacidade
         if (aula.estaLotada()) {
-            System.out.println("Aula lotada.");
-            System.out.println(
-                    "Capacidade atual: "
-                            + aula.getTotalInscricoes()
-                            + "/"
-                            + aula.getCapacidade()
-            );
-            return false;
+            return "Aula lotada. Capacidade: "
+                    + aula.getTotalInscricoes()
+                    + "/"
+                    + aula.getCapacidade();
         }
 
         // 3. Conflito de horário
-        for (InscricaoAula inscricao : aluno.listarInscricoes()) {
-            if (inscricao.getAula()
-                    .getHorario()
-                    .equals(aula.getHorario())) {
+        LocalDateTime novoInicio = aula.getHorario();
+        LocalDateTime novoFim = novoInicio.plusMinutes(aula.getDuracao());
 
-                System.out.println(
-                        "Conflito de horário com a aula: "
-                                + inscricao.getAula().getNome()
-                );
-                return false;
+        for (InscricaoAula inscricao : aluno.listarInscricoes()) {
+
+            Aula aulaExistente = inscricao.getAula();
+
+            LocalDateTime existenteInicio = aulaExistente.getHorario();
+            LocalDateTime existenteFim =
+                    existenteInicio.plusMinutes(aulaExistente.getDuracao());
+
+            boolean conflito =
+                    novoInicio.isBefore(existenteFim)
+                            && novoFim.isAfter(existenteInicio);
+
+            if (conflito) {
+                return "Conflito com a aula: " + aulaExistente.getNome();
             }
         }
 
-        // 4. Criar inscrição
+        // 4. OK
         InscricaoAula nova = new InscricaoAula(aluno, aula);
 
         aluno.adicionarInscricao(nova);
         aula.adicionarInscricao(nova);
 
-        System.out.println("Inscrição realizada com sucesso.");
-        return true;
+        return "Inscrição realizada com sucesso!";
     }
 
-    public void cancelar(Aluno aluno, Aula aula) {
+    public String cancelar(Aluno aluno, Aula aula) {
 
         if (aluno == null || aula == null) {
-            System.out.println("Aluno ou aula inválidos.");
-            return;
+            return "Aluno ou aula inválidos.";
         }
 
         InscricaoAula alvo = null;
@@ -149,28 +120,27 @@ public class AulaService implements CrudService<Aula> {
         if (alvo != null) {
             aluno.removerInscricao(alvo);
             aula.removerInscricao(alvo);
-            System.out.println("Inscrição cancelada com sucesso.");
-        } else {
-            System.out.println("Inscrição não encontrada.");
+            return "Inscrição cancelada com sucesso.";
         }
+
+        return "Inscrição não encontrada.";
     }
 
-    public void relatorioOcupacao() {
-        if (aulas.isEmpty()) {
-            System.out.println("Nenhuma aula cadastrada.");
-            return;
-        }
+    // ===== RELATÓRIO DE OCUPAÇÃO =====
 
-        System.out.println("===== RELATÓRIO DE OCUPAÇÃO =====");
+    public List<String> gerarRelatorioOcupacao() {
+
+        List<String> relatorio = new ArrayList<>();
 
         for (Aula aula : aulas) {
-            System.out.println(
-                    aula.getNome()
-                            + " -> "
-                            + aula.getTotalInscricoes()
-                            + "/"
-                            + aula.getCapacidade()
-            );
+            String linha = aula.getNome() + " - "
+                    + aula.getTotalInscricoes()
+                    + "/"
+                    + aula.getCapacidade();
+
+            relatorio.add(linha);
         }
+
+        return relatorio;
     }
 }
