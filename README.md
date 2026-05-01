@@ -1,184 +1,163 @@
-# 🏋️‍♂️ IronMind SGA — Sistema de Gerenciamento de Academia
+# 🏋️ IronMind - Sistema de Gerenciamento de Academia
 
-## 📌 Visão Geral
+## 📋 Sobre o Projeto
 
-O **IronMind SGA** é um sistema de gerenciamento de academia desenvolvido em **Java**, com foco em:
+O **IronMind** é um sistema de gerenciamento de academia desenvolvido em Java, com integração ao PostgreSQL via JDBC.
+
+Este projeto foi construído como parte de um trabalho interdisciplinar, integrando conceitos de:
 
 * Programação Orientada a Objetos (POO)
-* Arquitetura MVC
-* Modelagem de regras de negócio
-* Boas práticas (Clean Code)
+* Banco de Dados Relacional
 
-O sistema permite o gerenciamento de alunos, instrutores, planos, aulas coletivas e controle de frequência, aplicando regras de negócio reais do domínio de academias.
+O sistema permite o gerenciamento completo de alunos, instrutores, planos, aulas e frequência.
 
 ---
 
-## 🚀 Evolução do Projeto
+## 🎯 Objetivos do Projeto
 
-### 🔄 Comparação com a versão anterior (v1.1.1)
+### 🧠 Programação Orientada a Objetos
 
-| Aspecto           | Versão anterior | Versão atual    |
-| ----------------- | --------------- | --------------- |
-| Arquitetura MVC   | ❌ Incompleta    | ✔ Estruturada   |
-| Controllers       | ❌ Ausentes      | ✔ Implementados |
-| Organização       | ❌ Confusa       | ✔ Modular       |
-| Regras de negócio | ⚠️ Básicas      | ✔ Mais robustas |
-| Encapsulamento    | ❌ Fraco         | ✔ Melhorado     |
-| Estrutura geral   | ❌ Inicial       | ✔ Avançada      |
+* Aplicar os 4 pilares da POO
+* Desenvolver um sistema completo em Java
+* Utilizar boas práticas de desenvolvimento
+* Documentar o código com Javadoc
 
 ---
 
-## 📈 Progresso Geral do Sistema
+### 🗄️ Banco de Dados
 
-### 95% concluído
-
-* ✔ Requisitos atendidos: maior parte implementada
-* ⚠️ Pendência principal: integração completa com banco de dados
-* ✔ Arquitetura MVC consolidada
-* ✔ Regras de negócio principais implementadas
+* Modelar banco relacional com PostgreSQL
+* Implementar relacionamentos (1:N e N:N)
+* Desenvolver CRUD completo
+* Executar consultas com JOIN
 
 ---
 
-## 🧱 Arquitetura do Sistema
+### 🔗 Integração
 
-O projeto segue o padrão **MVC (Model-View-Controller)**:
-
-* **Model** → Entidades e regras de negócio
-* **Service** → Lógica da aplicação
-* **Controller** → Intermediação entre View e Service
-* **View** → Interface CLI (menus)
-
-### ✔ Melhorias implementadas
-
-* Controllers reais (AlunoController, AulaController, PlanoController, etc.)
-* View desacoplada dos Services
-* Menu modularizado
-* Classe `Pessoa` abstrata
-* Separação clara de responsabilidades
-* Melhor encapsulamento das entidades
-* Centralização das regras principais de negócio
+* Conectar Java com PostgreSQL via JDBC
+* Persistir objetos no banco de dados
+* Sincronizar modelo orientado a objetos com modelo relacional
 
 ---
 
-## 📋 Requisitos Obrigatórios
+## ⚙️ Funcionalidades
 
-### ✔ Sistema de Gerenciamento de Academia
-
-| Requisito                 | Status |
-| ------------------------- | ------ |
-| Gerenciar alunos          | ✔      |
-| Gerenciar instrutores     | ✔      |
-| Gerenciar planos          | ✔      |
-| Gerenciar aulas coletivas | ✔      |
-| Controle de frequência    | ✔      |
+* ✔ CRUD de Alunos
+* ✔ CRUD de Instrutores
+* ✔ CRUD de Planos
+* ✔ CRUD de Aulas
+* ✔ Inscrição e cancelamento em aulas
+* ✔ Controle de frequência
+* ✔ Relatórios de ocupação
 
 ---
 
-## 🧠 Regra de Negócio Complexa
+## 🚨 Regra de Negócio Complexa
 
-### 📌 Inscrição em Aulas
+O sistema implementa controle de inscrições em aulas com validações:
 
-Ao inscrever um aluno em uma aula, o sistema realiza:
+### 📌 Inscrição de Alunos
 
-* ✔ Verificação de plano ativo
-* ✔ Cálculo de vencimento (data matrícula + duração do plano)
-* ✔ Bloqueio de inscrição caso o plano esteja vencido
-* ✔ Verificação de capacidade da aula
-* ✔ Contagem de inscritos
-* ✔ Bloqueio caso a aula esteja cheia
-* ✔ Confirmação de inscrição
-* ✔ Fluxo funcional implementado
-
-### 📌 Consulta de Aluno
-
-Ao visualizar um aluno:
-
-| Informação                    | Status |
-| ----------------------------- | ------ |
-| Total de visitas              | ✔      |
-| Última visita                 | ✔      |
-| Quantidade de aulas inscritas | ✔      |
-| Status do plano               | ✔      |
-| Data de vencimento            | ✔      |
+* Verificação de plano ativo (com cálculo de vencimento)
+* Validação de capacidade da aula
+* Verificação de conflito de horário
+* Confirmação apenas se todas as condições forem atendidas
 
 ---
 
-## 🏗️ Avaliação de POO
+### 📊 Dados do Aluno
 
-### ✔ Pontos fortes
+O sistema também calcula:
 
-* Uso correto de herança (`Pessoa → Aluno / Instrutor`)
-* Separação de responsabilidades (MVC)
-* Controllers reais implementados
-* Organização clara do código
-* Baixo acoplamento entre camadas
-* Melhor distribuição de responsabilidades
-* Código mais escalável e de fácil manutenção
-
-### 🧠 Nota geral de POO
-
-**9.0 / 10**
+* Total de visitas
+* Última visita
+* Quantidade de aulas inscritas
+* Status do plano (ativo ou vencido)
 
 ---
 
-## 🗄️ Banco de Dados
+## 🗄️ Estrutura do Banco de Dados
 
-### Banco previsto: PostgreSQL
+O sistema utiliza PostgreSQL com as seguintes entidades principais:
 
-Estrutura planejada:
-
-* Alunos
-* Instrutores
-* Planos
-* Aulas
+* Aluno
+* Instrutor
+* Plano
+* Aula
 * Frequência
-* InscricaoAula (N:N)
-
-### ⚠️ Observação
-
-A única pendência atual do projeto é a integração completa da camada de banco de dados.
-
-A estrutura DAO foi criada e organizada, porém a implementação completa com PostgreSQL ainda não foi finalizada.
-
-Essa etapa será concluída nas próximas atualizações.
+* Inscrição (relação N:N)
 
 ---
 
-## 🖥️ Interface
+## 🧠 Requisitos Técnicos Atendidos
 
-* Aplicação em linha de comando (CLI)
-* Navegação via menus organizados por funcionalidade
-* Interface estruturada para uso acadêmico e expansão futura
+### POO
 
----
-
-## 👥 Usuários do Sistema
-
-* Funcionários da academia
-* Recepcionistas
-* Gerentes
+* ✔ Mínimo de 5 classes
+* ✔ Herança
+* ✔ Encapsulamento
+* ✔ Polimorfismo
+* ✔ Interface ou classe abstrata
+* ✔ Tratamento de exceções
+* ✔ Javadoc
 
 ---
 
-## 🧾 Conclusão
+### Banco de Dados
 
-O projeto evoluiu significativamente e hoje se encontra em um nível avançado e bem estruturado, com:
-
-* Arquitetura MVC consolidada
-* Regras de negócio relevantes implementadas
-* Código mais organizado e profissional
-* Melhor separção de responsabilidades
-* Estrutura preparada para crescimento e manutenção
-
-Atualmente, o sistema está funcional e atende praticamente todos os requisitos do projeto.
-
-A única pendência restante é a integração completa com o banco de dados PostgreSQL, que não compromete a estrutura de POO nem a regra de negócio principal do sistema.
+* ✔ Mínimo de 5 tabelas
+* ✔ Relacionamentos 1:N e N:N
+* ✔ CRUD completo
+* ✔ Consultas com JOIN
+* ✔ Regra de negócio implementada
 
 ---
 
-## 📌 Autor
+## 🧪 Auditoria do Projeto
 
-Desenvolvido por **Denis Alvarenga** como parte de um projeto acadêmico de:
+Para validar se o projeto atende aos requisitos, utilize o prompt abaixo em uma IA:
 
-* Programação Orientada a Objetos em Java
-* Banco de Dados com PostgreSQL
+```
+Você é um auditor técnico de software especializado em Java e PostgreSQL.
+
+Analise TODO o código do projeto e verifique se atende aos requisitos:
+
+- POO (herança, polimorfismo, encapsulamento)
+- Banco de dados (CRUD, JOIN, relacionamentos)
+- Regra de negócio (inscrição em aula com validações)
+
+⚠️ Regras:
+- Não inventar código
+- Analisar apenas o que existe
+- Ser direto e técnico
+
+Retorne:
+- Resumo geral
+- Pontos positivos
+- Problemas encontrados
+- O que está faltando
+- Veredito final (OK / Parcial / Incompleto)
+```
+
+---
+
+## 🚀 Versão Atual
+
+📦 `v2.1.0-rc2` (Release Candidate)
+
+Esta versão representa a etapa final de ajustes antes da release oficial.
+
+---
+
+## 👨‍💻 Equipe
+
+**Denis Alvarenga**
+
+* Estudante de Análise e Desenvolvimento de Sistemas
+* Estudante de Engenharia de Software
+
+**Daniel Fortes Paiva**
+
+* Desenvolvedor de Banco de Dados (PostgreSQL)
+
