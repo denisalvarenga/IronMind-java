@@ -114,34 +114,6 @@ O sistema utiliza PostgreSQL com as seguintes entidades principais:
 
 ---
 
-## 🧪 Auditoria do Projeto
-
-Para validar se o projeto atende aos requisitos, utilize o prompt abaixo em uma IA:
-
-```
-Você é um auditor técnico de software especializado em Java e PostgreSQL.
-
-Analise TODO o código do projeto e verifique se atende aos requisitos:
-
-- POO (herança, polimorfismo, encapsulamento)
-- Banco de dados (CRUD, JOIN, relacionamentos)
-- Regra de negócio (inscrição em aula com validações)
-
-⚠️ Regras:
-- Não inventar código
-- Analisar apenas o que existe
-- Ser direto e técnico
-
-Retorne:
-- Resumo geral
-- Pontos positivos
-- Problemas encontrados
-- O que está faltando
-- Veredito final (OK / Parcial / Incompleto)
-```
-
----
-
 ## 🚀 Versão Atual
 
 📦 `v2.1.0-rc2` (Release Candidate)
