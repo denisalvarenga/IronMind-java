@@ -114,13 +114,10 @@ O sistema utiliza PostgreSQL com as seguintes entidades principais:
 
 ---
 
-## 🚀 Versão Atual
+🎬 Vídeo Demonstrativo
 
-📦 `v2.1.0-rc2` (Release Candidate)
-
-Esta versão representa a etapa final de ajustes antes da release oficial.
-
----
+Assista à demonstração completa do sistema em funcionamento:
+👉 [Clique aqui para assistir no YouTube](https://youtu.be/Yld9G36lQjY?si=g9EY0y9IRhDDKTlK)
 
 ## 👨‍💻 Equipe
 
