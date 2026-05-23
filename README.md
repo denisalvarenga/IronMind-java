@@ -114,19 +114,29 @@ O sistema utiliza PostgreSQL com as seguintes entidades principais:
 
 ---
 
-🎬 Vídeo Demonstrativo
+## 🎨 Protótipo do Sistema
+
+Visualize o protótipo/interface do projeto:
+
+👉 [Acessar Protótipo](https://denisalvarenga.github.io/prototipo-page/)
+
+---
+
+## 🎬 Vídeo Demonstrativo
 
 Assista à demonstração completa do sistema em funcionamento:
+
 👉 [Clique aqui para assistir no YouTube](https://youtu.be/Yld9G36lQjY?si=g9EY0y9IRhDDKTlK)
+
+---
 
 ## 👨‍💻 Equipe
 
-**Denis Alvarenga**
+### Denis Alvarenga
 
 * Estudante de Análise e Desenvolvimento de Sistemas
 * Estudante de Engenharia de Software
 
-**Daniel Fortes Paiva**
+### Daniel Fortes Paiva
 
 * Desenvolvedor de Banco de Dados (PostgreSQL)
-
